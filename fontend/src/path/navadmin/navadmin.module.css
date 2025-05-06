@@ -1,0 +1,43 @@
+
+#navbar{
+    height: 100vh;
+    color: #ffffff;
+    display: block;
+  
+   
+}
+#iconDashBoard{
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ margin: 0;
+ padding: 0;
+
+}
+#navCate{
+
+ margin: 0;
+ padding: 0;
+}
+.ulCate{
+display: block;
+margin: 0px;
+padding: 0px;
+}
+.liCate{
+display: flex;
+align-items: center;
+gap: 10px;
+padding-top: 15px;
+padding-bottom: 15px;
+}
+
+.liCate:hover{
+background-color: red;
+
+}
+.aCate{
+    text-decoration: none;
+    color: white;
+}
+

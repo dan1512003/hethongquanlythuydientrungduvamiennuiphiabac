@@ -1,0 +1,41 @@
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    background-color: #fff; /* Cho button background mặc định */
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 4px; /* Để button trông đẹp hơn */
+  }
+  
+  .pagination button.active {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .pagination button:hover {
+    background-color: #ddd;
+  }
+  
+  .pagination button:disabled {
+    cursor: not-allowed;
+    background-color: #f1f1f1;
+    color: #ccc;
+  }
+  
+  .pagination .page {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pagination .page button {
+    margin: 0 5px;
+  }

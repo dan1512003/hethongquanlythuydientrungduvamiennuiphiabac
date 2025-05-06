@@ -1,0 +1,13 @@
+
+#Main{
+background-color: white;
+
+}
+#mainContainer{
+    background-color: rgba(0, 0, 0, 0.877);
+
+}
+#main{
+    height: 100vh;
+    background-color: black;
+}

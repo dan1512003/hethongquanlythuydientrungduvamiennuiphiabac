@@ -1,0 +1,118 @@
+.footerContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     background-color: #10AF7E;
+     
+}
+.logoContainer{
+    width:50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+.container{
+    width:100%;
+    display: flex;
+     justify-content: end;
+    align-items: center;
+    position: relative;
+}
+.selectRegion{
+position: absolute;
+display: block;
+    top: 70px;
+    width:80vh;
+    right: 0;
+    background-color: white;
+    z-index: 2;
+    
+}
+.buttonRgion{
+    height: 36px;
+    width: 150px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-radius: 3px 3px 3px 3px;
+    background-color: #F7F7F7;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  
+}
+.buttonRgion:hover{
+    cursor: pointer;
+    background-color: #00897B;
+}
+.selectRegionContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr  1fr;
+    width: 100%;
+    height: 100%;
+
+
+}
+.authenticationContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+
+}
+.login{
+    margin-top: 18px;
+    margin-right: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.login:hover{
+   cursor: pointer;
+}
+.register{
+    margin-top: 18px;
+    margin-right: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.register:hover{
+   cursor: pointer;
+}
+.divRegion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid gray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.regionContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    border-radius: 5px 5px 5px 5px;
+    background: white;
+    margin-right: 20px;
+    height: 30px;
+    
+}
+.regionContainer:hover{
+    cursor: pointer;
+}
+.icon{
+    height: 20px;
+    margin-left: 10px;
+}
+.pregion{
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 18px;
+   
+}

@@ -1,0 +1,40 @@
+.card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    border-radius: 8px 8px 8px 8px ;
+    height: 120px;
+    margin-top: 20px;
+ 
+
+}
+.card:hover{
+    cursor: pointer;
+
+}
+.imageContainer {
+    display: flex;
+    width: 50px; /* hoặc bất kỳ kích thước cụ thể nào bạn muốn */
+  }
+  
+  .imageContainer img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* đảm bảo hình không bị méo */
+  }
+.cardContainer{
+    display:block;
+    width: 100%;
+}
+.headerCard{
+    margin-top: 20px;
+    padding:0px;
+    color:green;
+}
+.footerCard{
+   display:flex;
+  justify-content: space-between;
+}

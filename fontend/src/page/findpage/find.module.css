@@ -1,0 +1,46 @@
+.findContainer{
+    display: block;
+    align-items: center;
+    justify-content: center;
+    
+  
+}
+.tilteContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 3px solid green;
+    width: 100%;
+    color: green;
+}
+.tilte{
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+.icon{
+    height: 25px;
+   
+}
+.inputContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+}
+.input{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px 5px 5px 5px;
+    border: 1px solid gray;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top:20px;
+}
+.listContainer{
+    display: block;
+    margin-bottom: 20px;
+    width: 100%;
+    
+}
