@@ -6,6 +6,7 @@ import hydrologicalstationReducer from "../slice/hydrologicalstation"
 import districtReducer from "../slice/district"
 import riverReducer from "../slice/river"
 import lakeReducer from "../slice/lake"
+import authReducer from "../slice/auth"
 export const store = configureStore({
   reducer: {
     filter: filterReducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
     district:districtReducer,
     lake:lakeReducer,
     river: riverReducer,
-    hydrologicalstation:hydrologicalstationReducer
+    hydrologicalstation:hydrologicalstationReducer,
+    auth:authReducer
   }
 });

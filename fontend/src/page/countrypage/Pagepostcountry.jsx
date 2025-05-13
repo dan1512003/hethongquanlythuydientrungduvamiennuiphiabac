@@ -25,7 +25,7 @@ function Pagegetcountry() {
       const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(addProvince(formData));
-        navigate('/admin'); // Chuyển hướng ngay
+        navigate('/admin'); 
       };
     
       return (

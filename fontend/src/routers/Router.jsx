@@ -12,8 +12,8 @@ import UpdateHydroelectrictPlant from "../page/hydroelectricplant/pageupdatehydr
 import GetDistrict from "../page/district/getpagedistrict"
 import AddDistrict from "../page/district/postpagedistrict"
 import UpdateDistrict from "../page/district/updatedistrict"
-
-
+import Login from "../page/login/Login"
+import Register from "../page/register/Register";
 import GetLake from "../page/lake/getlake"
 import AddLake from "../page/lake/postlake"
 import UpdateLake from "../page/lake/updatelake"
@@ -72,7 +72,8 @@ function Router() {
   <Route path="addhydrologicalstation" element={<AddHydroLogicalStation/>}/>
   <Route path="updatehydrologicalstation/:id" element={<UpdateHydroLogicalStation/>} />
 </Route>
-
+  <Route path="/login" element={<Login />} />
+ <Route path="/register" element={<Register />} />
      </Routes>
 
      

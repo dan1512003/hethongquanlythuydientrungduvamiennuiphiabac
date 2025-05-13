@@ -265,3 +265,12 @@ export const deletehydrologicalstation = (id) => {
       throw error;  
     });
 };
+export const login= (data) => {
+
+  return axios.post(`http://localhost:8080/user/login`,data)
+  
+};
+export const register= (data) => {
+
+  return axios.post(`http://localhost:8080/user/register`,data)
+};
