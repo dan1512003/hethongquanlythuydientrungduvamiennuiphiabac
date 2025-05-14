@@ -605,7 +605,7 @@ console.log(keyword)
     WHERE similarity(
       regexp_replace(unaccent(lower(tinh.adm1_vi)), '[^a-z]', '', 'g'),
       regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-    ) > 0.5
+    ) > 0.7
     ORDER BY 
       similarity(
         regexp_replace(unaccent(lower(tinh.adm1_vi)), '[^a-z]', '', 'g'),
@@ -643,7 +643,7 @@ console.log(keyword)
     WHERE similarity(
       regexp_replace(unaccent(lower(huyen.adm2_vi)), '[^a-z]', '', 'g'),
       regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-    ) > 0.5
+    ) > 0.7
     ORDER BY 
       similarity(
         regexp_replace(unaccent(lower(huyen.adm2_vi)), '[^a-z]', '', 'g'),
@@ -680,7 +680,7 @@ console.log(keyword)
                 WHERE similarity(
                   regexp_replace(unaccent(lower(song.name)), '[^a-z]', '', 'g'),
                   regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-                ) > 0.5
+                ) > 0.7
                 ORDER BY 
                   similarity(
                     regexp_replace(unaccent(lower(song.name)), '[^a-z]', '', 'g'),
@@ -698,46 +698,46 @@ console.log(keyword)
                      const query4 = `
 
                  
-                        SELECT 
-                       json_build_object(
-                         'type', 'FeatureCollection',
-                         'features', json_agg(feature)
-                       ) AS geojson,
-                       COUNT(*) AS total
-                     FROM (
-                       SELECT 
-                         json_build_object(
-                           'type', 'Feature',
-                           'geometry', ST_AsGeoJSON(hep.geom)::json,
-                           'properties', json_build_object(
-                           'id', hep.gid,
-                           'name', hep.name,
-                            'province', hep.province,
-                            'district', hep.district,
-                             'generating_units', hep.generating_units,
-                             'capacity', hep.capacity,
-                             'electricity_output', hep.electricity_output,
-                             'river', hep.river,
-                              'longitude', hep.longitude,
-                             'latitude', hep.latitude,
-                              'investor', hep.investor,
-                               'build_state', hep.build_state,
-                               'description', hep.description,
-                               'type', hep.type
-                           )
-                         ) AS feature
-                       FROM hydroelectricplant AS hep
-                       WHERE similarity(
-                         regexp_replace(unaccent(lower(hep.name)), '[^a-z]', '', 'g'),
-                         regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-                       ) > 0.5
-                       ORDER BY 
-                         similarity(
-                           regexp_replace(unaccent(lower(hep.name)), '[^a-z]', '', 'g'),
-                           regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-                         ) DESC
-                       LIMIT 1
-                     ) AS subquery;
+                   SELECT 
+  json_build_object(
+    'type', 'FeatureCollection',
+    'features', json_agg(feature)
+  ) AS geojson,
+  COUNT(*) AS total
+FROM (
+  SELECT 
+    json_build_object(
+      'type', 'Feature',
+      'geometry', ST_AsGeoJSON(hep.geom)::json,
+      'properties', json_build_object(
+        'id', hep.gid,
+        'name', hep.name,
+        'province', hep.province,
+        'district', hep.district,
+        'generating_units', hep.generating_units,
+        'capacity', hep.capacity,
+        'electricity_output', hep.electricity_output,
+        'river', hep.river,
+        'longitude', hep.longitude,
+        'latitude', hep.latitude,
+        'investor', hep.investor,
+        'build_state', hep.build_state,
+        'description', hep.description,
+        'type', hep.type
+      )
+    ) AS feature
+  FROM hydroelectricplant AS hep
+  WHERE similarity(
+    regexp_replace(unaccent(lower(hep.name)), '[^a-z0-9]', '', 'g'),
+    regexp_replace(unaccent(lower($1)), '[^a-z0-9]', '', 'g')
+  ) =1.0
+  ORDER BY 
+    similarity(
+      regexp_replace(unaccent(lower(hep.name)), '[^a-z0-9]', '', 'g'),
+      regexp_replace(unaccent(lower($1)), '[^a-z0-9]', '', 'g')
+    ) DESC
+  LIMIT 1
+) AS subquery;
  
                    `;
                    const result4= await pool.query(query4,[keyword]);
@@ -781,7 +781,7 @@ console.log(keyword)
                      WHERE similarity(
                        regexp_replace(unaccent(lower(ho.name)), '[^a-z]', '', 'g'),
                        regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-                     ) > 0.5
+                     ) > 0.7
                      ORDER BY 
                        similarity(
                          regexp_replace(unaccent(lower(ho.name)), '[^a-z]', '', 'g'),
@@ -832,7 +832,7 @@ console.log(keyword)
                      WHERE similarity(
                        regexp_replace(unaccent(lower(thuyvan.name)), '[^a-z]', '', 'g'),
                        regexp_replace(unaccent(lower($1)), '[^a-z]', '', 'g')
-                     ) > 0.5
+                     ) > 0.7
                      ORDER BY 
                        similarity(
                          regexp_replace(unaccent(lower(thuyvan.name)), '[^a-z]', '', 'g'),

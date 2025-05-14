@@ -57,7 +57,7 @@ function Main() {
  const [geojon2Province, setGeojson2Province] = useState([]);
   const[latitude, setLatitude] = useState([]);
   const[longitude, setLongitude] = useState([]);
- 
+ const [debouncedKeyword, setDebouncedKeyword] = useState('');
   const fetchGeojsonData = async () => {
     try{
       const response = await fetch('http://localhost:3000/admin/getapihydroelectricplant');
@@ -136,9 +136,7 @@ useEffect(() => {
   
 }, [palette]);
 
-  if (!geojson2) {
-    return <div>Loading...</div>;
-  }
+
 
 
 const changeLayer= async (layer) => {
@@ -224,44 +222,47 @@ const handleClick= () => {
   
   }
 };
-const handleKeyChange= async(e)=>{
-  e.preventDefault(); 
-   setKeyword(e.target.value)
+
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedKeyword(keyword);
+  }, 500); 
+
+  return () => clearTimeout(timer); 
+}, [keyword]);
+
+useEffect(() => {
+  if (!debouncedKeyword.trim()) return; 
   fetch('http://localhost:3000/admin/find', {
-    method: 'POST',  
-    headers: {
-      'Content-Type': 'application/json', 
-    },
-    body: JSON.stringify({ keyword: keyword })  
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ keyword: debouncedKeyword }),
   })
-    .then(res => res.json())  
+    .then(res => res.json())
     .then(data => {
- 
       const hydroelectricplant = data.resulthydroelectricplant?.slice(0, 5) || [];
       const lake = data.resultlake?.slice(0, 5 - hydroelectricplant.length) || [];
       const hydrologicalstation = data.resulthydrologicalstation?.slice(0, 5 - hydroelectricplant.length - lake.length) || [];
       const province = data.resultprovincer?.slice(0, 5 - hydroelectricplant.length - lake.length - hydrologicalstation.length) || [];
-      const district = data.resultdistrict?.slice(0, 5  - hydroelectricplant.length - lake.length - hydrologicalstation.length - province.length) || [];
+      const district = data.resultdistrict?.slice(0, 5 - hydroelectricplant.length - lake.length - hydrologicalstation.length - province.length) || [];
       const river = data.resultriver?.slice(0, 5 - hydroelectricplant.length - lake.length - hydrologicalstation.length - province.length - district.length) || [];
-   setHydroelectricplantData(hydroelectricplant);
-   setProvinceData(province);
-   setDistrictData(district);
-   setLakeData(lake);
-   setRiverData(river);
-   setHydrologicalstationData(hydrologicalstation);
- 
 
-   
+      setHydroelectricplantData(hydroelectricplant);
+      setProvinceData(province);
+      setDistrictData(district);
+      setLakeData(lake);
+      setRiverData(river);
+      setHydrologicalstationData(hydrologicalstation);
     })
-    .catch(error => {
-      console.error('Lỗi khi tìm kiếm:', error);
-    });
+    .catch(error => console.error('Lỗi khi tìm kiếm:', error));
+}, [debouncedKeyword]);
 
-   
+const handleKeyChange = (e) => {
+  e.preventDefault();
+  setKeyword(e.target.value);
+};
 
-
-
-}
 
 const togglePopup = (id,name) => {
   setShowPopup((prevState) => ({
@@ -278,7 +279,9 @@ const townFillPaint = {
 };
 
 
-
+  if (!geojson2) {
+    return <div>Loading...</div>;
+  }
 
 
     return(
@@ -960,19 +963,17 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
           <RSource
-            id="gee-tiles-source"
-            key={`gee-tiles-source-${urlformat}`}
-            type="raster"
-            tiles={[urlformat]}
-            tileSize={256}
-          />
-          <RLayer
-            id="gee-tiles-layer"
-            key={`gee-tiles-layer-${urlformat}`}
-            source="gee-tiles-source"
-            type="raster"
-            paint={{ 'raster-opacity': 0.6 }}
-          />
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
         </React.Fragment>
       )}
     </RMap>
@@ -1017,20 +1018,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
      {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-          <RSource
-            id="gee-tiles-source"
-            key={`gee-tiles-source-${urlformat}`}
-            type="raster"
-            tiles={[urlformat]}
-            tileSize={256}
-          />
-          <RLayer
-            id="gee-tiles-layer"
-            key={`gee-tiles-layer-${urlformat}`}
-            source="gee-tiles-source"
-            type="raster"
-            paint={{ 'raster-opacity': 0.6 }}
-          />
+             <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
         </React.Fragment>
       )}
     </RMap>
