@@ -61,10 +61,7 @@ function Main() {
   const fetchGeojsonData = async () => {
     try{
       const response = await fetch('http://localhost:3000/admin/getapihydroelectricplant');
-      const response2 =await fetch('http://localhost:3000/admin/apigeedrought');
-      const data2 = await response2.json();
       const data = await response.json();
-      setUrlformat(data2.urlFormat)
       setGeojsonData4(data.geojson4);
       setGeojsonData2(data.geojson2);
       setGeojsonData3(data.geojson3);
