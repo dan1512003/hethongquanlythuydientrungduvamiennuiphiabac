@@ -42,6 +42,7 @@ function Main() {
   const [haslayerdrought,setHasLayerDrought]=useState(false);
   const [haslayerndwi,setHasLayerNdwi]=useState(false);
   const [haslayerrainfall,setHasLayerRainfall]=useState(false);
+ const[ palette,setpalette]=useState([])
 
   const [isOpen, setIsOpen] = useState(true);
   const [findValue, setFindValue] = useState('');
@@ -51,11 +52,12 @@ function Main() {
   const [hasFilterProvince, setHasFilterProvince] = useState(false);
   const [dataFilterRiver, setDataFilterRiver] = useState([]);
   const [dataFilterProvince ,setDataFilterProvince] = useState([]); 
-  
+
  const [geojon2River, setGeojson2River] = useState([]);
  const [geojon2Province, setGeojson2Province] = useState([]);
   const[latitude, setLatitude] = useState([]);
   const[longitude, setLongitude] = useState([]);
+ 
   const fetchGeojsonData = async () => {
     try{
       const response = await fetch('http://localhost:3000/admin/getapihydroelectricplant');
@@ -128,6 +130,11 @@ setLongitude(data.longitude);
 
 
   }, [location, river, filterRiver, filterProvincer]);
+useEffect(() => {
+ 
+    console.log('Palette:', palette);
+  
+}, [palette]);
 
   if (!geojson2) {
     return <div>Loading...</div>;
@@ -141,7 +148,7 @@ const changeLayer= async (layer) => {
       const response =await fetch('http://localhost:3000/admin/apigeendwi');
       const data = await response.json();
       setUrlformat(data.urlFormat)
-console.log(urlformat)
+    
       setHasLayerDrought(false);
       setHasLayerNdwi(prevState => !prevState)
       console.log(haslayerndwi)
@@ -151,7 +158,7 @@ console.log(urlformat)
       const response =await fetch('http://localhost:3000/admin/apigeedrought');
       const data = await response.json();
       setUrlformat(data.urlFormat)
-
+      setpalette(data.palette)
       setHasLayerDrought(prevState => !prevState);
       setHasLayerNdwi(false)
       setHasLayerRainfall(false)
@@ -160,7 +167,7 @@ console.log(urlformat)
       const response =await fetch('http://localhost:3000/admin/apigeerainfall');
       const data = await response.json();
       setUrlformat(data.urlFormat)
-
+       setpalette(data.palette)
       setHasLayerDrought(false);
       setHasLayerNdwi(false)
       setHasLayerRainfall(prevState => !prevState)
@@ -269,6 +276,11 @@ const townFillPaint = {
   "fill-outline-color": "rgba(0,0,0,0.1)",
   "fill-color": "rgba(0,0,0,0.3)",
 };
+
+
+
+
+
     return(
         <div  className={style.homeContainer}>
 
@@ -476,20 +488,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
               />
               {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
           <React.Fragment>
-            <RSource
-              id="gee-tiles-source"
-              key={`gee-tiles-source-${urlformat}`}
-              type="raster"
-              tiles={[urlformat]}
-              tileSize={256}
-            />
-            <RLayer
-              id="gee-tiles-layer"
-              key={`gee-tiles-layer-${urlformat}`}
-              source="gee-tiles-source"
-              type="raster"
-              paint={{ 'raster-opacity': 0.6 }}
-            />
+          <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
           </React.Fragment>
         )}
 </RMap>
@@ -536,20 +546,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
 {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
           <React.Fragment>
-            <RSource
-              id="gee-tiles-source"
-              key={`gee-tiles-source-${urlformat}`}
-              type="raster"
-              tiles={[urlformat]}
-              tileSize={256}
-            />
-            <RLayer
-              id="gee-tiles-layer"
-              key={`gee-tiles-layer-${urlformat}`}
-              source="gee-tiles-source"
-              type="raster"
-              paint={{ 'raster-opacity': 0.6 }}
-            />
+           <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
           </React.Fragment>
         )}
 </RMap>
@@ -569,11 +577,11 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       { !hasSearched && !hasFilterRiver && !hasFilterProvince && (
        <RMap
-
-
+ 
        minZoom={6}
       initialCenter={mountain}  
       mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
+  
 >
       <RNavigationControl />
       {geojson4.features.map((feature) => {
@@ -673,7 +681,7 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
             latitude={Number(feature.properties.latitude)}
             onClick={(e) => {
               e.stopPropagation();
-              togglePopup(feature.properties.id,feature.properties.name); // Toggle popup visibility for each feature
+              togglePopup(feature.properties.id,feature.properties.name); 
             }}
           >
     { feature.properties.type === 'Reservoir Hydro'? <Icon3/>:<Icon2/>
@@ -709,18 +717,20 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
       })}
   {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
   <React.Fragment>
-    <RSource
-      id="gee-tiles"
-      key={urlformat}
-      type="raster"
-      tiles={[urlformat]}
-      tileSize={256}
-    />
-    <RLayer
-      id="gee-tiles-layer"
-      source="gee-tiles"
-      type="raster"
-    />
+  <RSource
+  id="gee-tiles-source"
+  type="raster"
+  tiles={urlformat ? [urlformat] : []}
+  tileSize={256}
+/>
+<RLayer
+  id="gee-tiles-layer"
+  source="gee-tiles-source"
+  type="raster"
+  layout={{
+    visibility: urlformat ? 'visible' : 'none'
+  }}
+/>
   </React.Fragment>
 )}
 </RMap>
@@ -801,20 +811,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-          <RSource
-            id="gee-tiles-source"
-            key={`gee-tiles-source-${urlformat}`}
-            type="raster"
-            tiles={[urlformat]}
-            tileSize={256}
-          />
-          <RLayer
-            id="gee-tiles-layer"
-            key={`gee-tiles-layer-${urlformat}`}
-            source="gee-tiles-source"
-            type="raster"
-            paint={{ 'raster-opacity': 0.6 }}
-          />
+         <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
         </React.Fragment>
       )}
     </RMap>
@@ -858,20 +866,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-          <RSource
-            id="gee-tiles-source"
-            key={`gee-tiles-source-${urlformat}`}
-            type="raster"
-            tiles={[urlformat]}
-            tileSize={256}
-          />
-          <RLayer
-            id="gee-tiles-layer"
-            key={`gee-tiles-layer-${urlformat}`}
-            source="gee-tiles-source"
-            type="raster"
-            paint={{ 'raster-opacity': 0.6 }}
-          />
+           <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
         </React.Fragment>
       )}
     </RMap>
@@ -953,20 +959,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-          <RSource
-            id="gee-tiles-source"
-            key={`gee-tiles-source-${urlformat}`}
-            type="raster"
-            tiles={[urlformat]}
-            tileSize={256}
-          />
-          <RLayer
-            id="gee-tiles-layer"
-            key={`gee-tiles-layer-${urlformat}`}
-            source="gee-tiles-source"
-            type="raster"
-            paint={{ 'raster-opacity': 0.6 }}
-          />
+           <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
         </React.Fragment>
       )}
     </RMap>
@@ -1011,20 +1015,18 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-          <RSource
-            id="gee-tiles-source"
-            key={`gee-tiles-source-${urlformat}`}
-            type="raster"
-            tiles={[urlformat]}
-            tileSize={256}
-          />
-          <RLayer
-            id="gee-tiles-layer"
-            key={`gee-tiles-layer-${urlformat}`}
-            source="gee-tiles-source"
-            type="raster"
-            paint={{ 'raster-opacity': 0.6 }}
-          />
+           <RSource
+      id="gee-tiles-source"
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles-source"
+      type="raster"
+      paint={{ 'raster-opacity': 0.6 }}
+    />
         </React.Fragment>
       )}
     </RMap>
@@ -1076,7 +1078,54 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
   <span className={style.textiteam}>Mức độ hạn hán</span>
 </div>
   </div>
+ 
 </div>
+{haslayerdrought&&(
+  <div className={style.palettecontainer}>
+    <span style={{ fontWeight: 'bold' }}>Thang đo mức độ hạn hán</span>
+      <div className={style.paletteSpan}>
+          
+          <span style={{ marginRight: "20px" }}> Ẩm ướt</span>
+   {palette.map((bg, i) => (
+        <span
+          key={i}
+          style={{
+            background: bg,
+            width: 50,        
+            height: 25,       
+            display: 'inline-block',
+            border: '1px solid #333',
+          }}
+        />
+      ))}
+        <span style={{ marginLeft:"20px" }}>Hạn hán</span>
+      </div>
+    </div>
+)}
+  
+  {haslayerrainfall&&(
+  <div className={style.palettecontainer}>
+    <span style={{ fontWeight: 'bold' }}>Thang đo lượng mưa</span>
+      <div className={style.paletteSpan}>
+          
+          <span style={{ marginRight: "20px" }}> Ít mưa</span>
+   {palette.map((bg, i) => (
+        <span
+          key={i}
+          style={{
+            background: bg,
+            width: 75,        
+            height: 25,       
+            display: 'inline-block',
+            border: '1px solid #333',
+          }}
+        />
+      ))}
+        <span style={{ marginLeft:"20px" }}>Mưa nhiều</span>
+      </div>
+    </div>
+)}
+  
 {hydroelectricplantData.length ===0 && provinceData.length ===0 && districtData.length ===0 && riverData.length ===0 ? null:
  ( 
   checkFind  &&( <div className={style.resultfind}>

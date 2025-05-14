@@ -56,7 +56,7 @@
     position: absolute;
     bottom: 30px;
     left: 20px;
-    z-index: 0;
+    z-index: 2;
   }
    .layer{
     display: flex;
@@ -70,7 +70,7 @@
    }
    .showlayer{
     margin-left: 5px;
-    height: 90px;
+    height: 95px;
     border-radius: 5px 5px 5px 5px;
     overflow: hidden;   
     background-color: white;
@@ -84,7 +84,7 @@
     width: 70px;
     height: 70px;
     margin-left: 5px;
-   display: block;
+     display: block;
     align-items: center;
     justify-content: center;
     border-radius: 5px;
@@ -149,3 +149,23 @@
   z-index: 2;
   background-color: white;
 }
+ 
+.palettecontainer{
+ display: block;
+  position: absolute;
+  bottom: 5px;
+  left: 40vh;
+ justify-items: center;
+ align-items: center;
+ width: 80vh;
+ align-items: center;
+ border-radius: 3px 3px 3px 3px;
+  background-color:white;
+  height: 20vh;
+  z-index: 1;
+}
+.paletteSpan{
+margin-top: 10px;
+display: flex;
+
+} 

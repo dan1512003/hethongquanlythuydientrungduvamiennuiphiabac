@@ -48,8 +48,8 @@ exports.getApiGeeDrought = async (req, res) => {
               imageGeom.evaluate((result, error) =>
                error ? rejects(new Error(error)) : res.json({
                   urlFormat:map.urlFormat,
-                  geojson:result
-                
+                  geojson:result,
+                  palette: ['blue', 'cyan', 'green', 'yellow', 'orange', 'red']
                 })   
               )
             });
@@ -192,7 +192,8 @@ var visParams =
                   imageGeom.evaluate((result, error) =>
                    error ? rejects(new Error(error)) : res.json({
                       urlFormat:map.urlFormat,
-                      geojson:result
+                      geojson:result,
+                      palette: ['#d0f0fd', '#80cffa', '#2b9ee6', '#084081']
                     
                     })   
                   )
