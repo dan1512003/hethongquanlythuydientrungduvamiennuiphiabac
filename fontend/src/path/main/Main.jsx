@@ -77,10 +77,13 @@ function Main() {
   };
 
  
-
+useEffect(() => {
+fetchGeojsonData();
+  
+}, [])
   useEffect(() => {
   
-    fetchGeojsonData();
+    
     const fetchData = async () => {
       try {
         if (filterRiver) {
@@ -811,7 +814,7 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-         <RSource
+        <RSource
       id="gee-tiles-source"
       type="raster"
       tiles={[urlformat]}
@@ -866,7 +869,7 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-           <RSource
+        <RSource
       id="gee-tiles-source"
       type="raster"
       tiles={[urlformat]}
@@ -959,18 +962,20 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
 
       {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-           <RSource
-      id="gee-tiles-source"
-      type="raster"
-      tiles={[urlformat]}
-      tileSize={256}
-    />
-    <RLayer
-      id="gee-tiles-layer"
-      source="gee-tiles-source"
-      type="raster"
-      paint={{ 'raster-opacity': 0.6 }}
-    />
+          <RSource
+            id="gee-tiles-source"
+            key={`gee-tiles-source-${urlformat}`}
+            type="raster"
+            tiles={[urlformat]}
+            tileSize={256}
+          />
+          <RLayer
+            id="gee-tiles-layer"
+            key={`gee-tiles-layer-${urlformat}`}
+            source="gee-tiles-source"
+            type="raster"
+            paint={{ 'raster-opacity': 0.6 }}
+          />
         </React.Fragment>
       )}
     </RMap>
@@ -1013,20 +1018,22 @@ mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
         );
       })}
 
-      {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
+     {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
         <React.Fragment>
-           <RSource
-      id="gee-tiles-source"
-      type="raster"
-      tiles={[urlformat]}
-      tileSize={256}
-    />
-    <RLayer
-      id="gee-tiles-layer"
-      source="gee-tiles-source"
-      type="raster"
-      paint={{ 'raster-opacity': 0.6 }}
-    />
+          <RSource
+            id="gee-tiles-source"
+            key={`gee-tiles-source-${urlformat}`}
+            type="raster"
+            tiles={[urlformat]}
+            tileSize={256}
+          />
+          <RLayer
+            id="gee-tiles-layer"
+            key={`gee-tiles-layer-${urlformat}`}
+            source="gee-tiles-source"
+            type="raster"
+            paint={{ 'raster-opacity': 0.6 }}
+          />
         </React.Fragment>
       )}
     </RMap>

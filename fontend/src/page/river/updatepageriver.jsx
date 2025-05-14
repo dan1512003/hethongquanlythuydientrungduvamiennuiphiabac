@@ -12,7 +12,7 @@ const Updatepageriver = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data, status, error } = useSelector((state) => state.river); // đảm bảo slice tên `river`
+  const { data} = useSelector((state) => state.river); 
   const [formData, setFormData] = useState({
     name: '',
     geom: '',
