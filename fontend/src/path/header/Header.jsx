@@ -11,6 +11,7 @@ import {
   setCheckFind,
   setCheckFilter
 } from '../../redux/slice/filter'
+
 function Header() {  
   const [geojsonprovince, setGeojsonprovince] = useState([]);
   const [geojsonriver, setGeojsonriver] = useState([]);
@@ -33,6 +34,7 @@ function Header() {
  dispatch(setLocation(feature.properties.adm1_en));  
  dispatch(setFilterRiver(false));
  dispatch(setFilterProvince(true));
+
    setCheck(prev => !prev)
   };
 
@@ -40,6 +42,7 @@ function Header() {
  dispatch(setRiver(feature.properties.name));
  dispatch(setFilterRiver(true));
  dispatch(setFilterProvince(false));
+
     setCheck(prev => !prev)
     
   };

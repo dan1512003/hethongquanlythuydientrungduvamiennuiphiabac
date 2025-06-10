@@ -15,8 +15,12 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import {   
   setCheckFind,
-  setCheckFilter
+  setCheckFilter,
+  setFilterRiver,
+  setFilterProvince,
+ 
 } from '../../redux/slice/filter'
+
 function Main() {
    const {    
     location, 
@@ -25,6 +29,11 @@ function Main() {
     filterProvincer, 
     checkFind
   } = useSelector(state => state.filter)
+  const{
+    hydroelectricplant,
+     findactive
+  
+  }=useSelector(state => state.findhydroelectrictplant)
    const dispatch = useDispatch()
   const [showPopup, setShowPopup] = useState({});
   const mountain = [104.193703,22.131194];  
@@ -43,7 +52,7 @@ function Main() {
   const [haslayerndwi,setHasLayerNdwi]=useState(false);
   const [haslayerrainfall,setHasLayerRainfall]=useState(false);
  const[ palette,setpalette]=useState([])
-
+const [findhep,setfindhep]=useState(false)
   const [isOpen, setIsOpen] = useState(true);
   const [findValue, setFindValue] = useState('');
   const [hydrologicalstationData, setHydrologicalstationData] = useState([]);
@@ -73,7 +82,14 @@ function Main() {
   
   };
 
- 
+ useEffect(() => {
+if(findactive){
+setfindhep(findactive);
+setHasSearched(false);
+setHasFilterRiver(false);
+setHasFilterProvince(false);
+}
+ }, [findactive,dispatch]);
 useEffect(() => {
 fetchGeojsonData();
   
@@ -93,7 +109,7 @@ fetchGeojsonData();
 setHasFilterRiver(filterRiver);
 setDataFilterRiver(data.geojson?.features || []);
 
-
+setfindhep(false)
 setGeojson2River(data.geojson2?.features || []);
 setHasSearched(false);
 setLatitude(data.latitude);
@@ -110,7 +126,7 @@ setLongitude(data.longitude);
        
 
             setGeojson2Province(data.geojson2?.features || []);
-         
+            setfindhep(false)
             setHasSearched(false); 
             setLatitude(data.latitude);
             setLongitude(data.longitude);
@@ -193,13 +209,14 @@ const changeLayer= async (layer) => {
 const handleClick= () => {
  dispatch(setCheckFilter(false));
  dispatch(setCheckFind(true));
-
+ 
  
    
   };
  const handleKeyDown = async(e) => {
   if (e.key === 'Enter') {
     e.preventDefault(); 
+
     fetch('http://localhost:3000/admin/search', {
       method: 'POST',  
       headers: {
@@ -214,12 +231,15 @@ const handleClick= () => {
         setFindValue(data.find);
         setResults(features);
         setHasSearched(true); 
+        setFilterProvince(false);
+        setFilterRiver(false);
+        setfindhep(false);
         console.log(results)
       })
       .catch(error => {
         console.error('Lỗi khi tìm kiếm:', error);
       });
-  
+ 
   }
 };
 
@@ -292,6 +312,80 @@ const townFillPaint = {
 </div>
            <div className={style.mapContainer}>
      
+ { findhep  && (
+          
+
+    <RMap
+
+
+      minZoom={6}
+      initialCenter={[Number(hydroelectricplant.longitude), Number(hydroelectricplant.latitude)]}
+      mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
+      >
+      
+      <RMarker
+                 
+                 longitude={Number(hydroelectricplant.longitude)}
+                 latitude={Number(hydroelectricplant.latitude)}
+                 onClick={(e) => {
+                   e.stopPropagation();
+                   togglePopup(hydroelectricplant.gid,hydroelectricplant.name); 
+                 }}
+               >
+         {hydroelectricplant.type === 'Reservoir Hydro'? <Icon3/>:<Icon2/>
+         } 
+                </RMarker>
+                {showPopup[hydroelectricplant.gid] && showPopup[hydroelectricplant.name] && (
+                   <RPopup
+                   longitude={Number(hydroelectricplant.longitude)}
+                   latitude={Number(hydroelectricplant.latitude)}
+                    offset={gradientMarkerPopupOffset}
+                   >
+                    
+                 <div style={{ maxWidth: '250px' }}>
+           <h3>{hydroelectricplant.name}</h3>
+           <p><strong>Tỉnh:</strong> {hydroelectricplant.province}</p>
+           <p><strong>Dòng sông:</strong> {hydroelectricplant.river}</p>
+           <p><strong>Vĩ độ:</strong> {hydroelectricplant.latitude}</p>
+           <p><strong>Kinh độ:</strong> {hydroelectricplant.longitude}</p>
+           <p><strong>Loại thuỷ điện:</strong>{hydroelectricplant.type}</p>
+           <Link to={`/info/${hydroelectricplant.gid}`}>
+  Bấm vào đây để xem chi tiết
+</Link>
+           
+       
+                   
+           </div>
+                   </RPopup>
+           )}
+             {(haslayerndwi || haslayerdrought || haslayerrainfall) && (
+  <React.Fragment>
+    <RSource
+      id="gee-tiles"
+      key={urlformat}
+      type="raster"
+      tiles={[urlformat]}
+      tileSize={256}
+    />
+    <RLayer
+      id="gee-tiles-layer"
+      source="gee-tiles"
+      type="raster"
+    />
+  </React.Fragment>
+)}
+      </RMap>
+      
+          
+
+
+
+       
+           )}
+
+
+
+
            { hasSearched  && (
           
           results.map((feature)=>{

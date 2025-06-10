@@ -274,3 +274,12 @@ export const register= (data) => {
 
   return axios.post(`http://localhost:8080/user/register`,data)
 };
+export const loginadmin= (data) => {
+
+  return axios.post(`http://localhost:8080/admin/login`,data)
+  
+};
+export const registeradmin= (data) => {
+
+  return axios.post(`http://localhost:8080/admin/register`,data)
+};

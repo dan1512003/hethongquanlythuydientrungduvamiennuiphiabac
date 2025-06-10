@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import style from "./navadmin.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse} from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+
 
 const Navadmin= () => {
 

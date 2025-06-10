@@ -34,6 +34,33 @@ export const register = createAsyncThunk(
   }
 );
 
+
+export const registeradmin = createAsyncThunk(
+  'auth/registeradmin',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await api.registeradmin(data);
+      return res.data; 
+    } catch (err) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data); 
+      } 
+    }
+  }
+);
+
+
+export const loginadmin = createAsyncThunk('auth/loginadmin', async (data,{rejectWithValue}) => {
+try {
+   const res = await api.loginadmin(data); 
+   localStorage.setItem('token', res.token); 
+      return res.data.token;
+} catch (err) {
+    if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data); 
+      } 
+}
+});
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -68,7 +95,34 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.registerStatus = 'failed';
         state.error = action.payload;
+      })
+
+
+       .addCase(loginadmin.pending, (state) => {
+        state.loginStatus = 'loading';
+      })
+      .addCase(loginadmin.fulfilled, (state, action) => {
+        state.loginStatus = 'succeeded';
+        state.token = action.payload;
+      })
+      .addCase(loginadmin.rejected, (state, action) => {
+        state.loginStatus = 'failed';
+        state.error = action.payload;
+      })
+
+   
+      .addCase(registeradmin.pending, (state) => {
+        state.registerStatus = 'loading';
+      })
+      .addCase(registeradmin.fulfilled, (state,action) => {
+        state.registerStatus = 'succeeded';
+      })
+      .addCase(registeradmin.rejected, (state, action) => {
+        state.registerStatus = 'failed';
+        state.error = action.payload;
       });
+
+ 
   },
 });
 
