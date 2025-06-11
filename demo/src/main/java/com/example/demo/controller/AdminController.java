@@ -11,7 +11,7 @@ import com.example.demo.service.JwtTokenProvider;
 import com.example.demo.service.AdminService;
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(origins = "http://localhost:3001", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class AdminController {
     private final AdminService adminService;
     private final JwtTokenProvider jwtTokenProvider;

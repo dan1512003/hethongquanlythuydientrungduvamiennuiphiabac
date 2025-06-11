@@ -31,7 +31,7 @@ const Loginadmin = () => {
       if (loginStatus === 'succeeded' && token) {
       
          alert('Login successful!');
-         navigate("/")
+         navigate("/admin")
        } 
    
     else if(loginStatus=== 'failed' && error ){
